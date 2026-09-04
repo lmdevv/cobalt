@@ -49,6 +49,7 @@ export const savingHandler = async ({ url, request, oldTaskId }: SavingHandlerAr
 
         alwaysProxy: getSetting("save", "alwaysProxy"),
         downloadMode: getSetting("save", "downloadMode"),
+        captionFormat: getSetting("save", "captionFormat"),
 
         subtitleLang: getSetting("save", "subtitleLang"),
         filenameStyle: getSetting("save", "filenameStyle"),
@@ -67,6 +68,13 @@ export const savingHandler = async ({ url, request, oldTaskId }: SavingHandlerAr
 
         allowH265: getSetting("save", "allowH265"),
         convertGif: getSetting("save", "convertGif"),
+    }
+
+    if (selectedRequest.downloadMode === "captions") {
+        const captionLang = getSetting("save", "captionLang");
+        if (captionLang && captionLang !== "none") {
+            selectedRequest.captionLanguage = captionLang;
+        }
     }
 
     const response = await API.request(selectedRequest);
@@ -103,6 +111,12 @@ export const savingHandler = async ({ url, request, oldTaskId }: SavingHandlerAr
 
             return downloadFile({
                 url: response.url,
+                method: selectedRequest.downloadMode === "captions"
+                    ? getSetting("save", "transcriptMethod")
+                    : undefined,
+                copyTextURL: selectedRequest.downloadMode === "captions"
+                    ? response.text || response.url
+                    : undefined,
             });
         } else {
             downloadButtonState.set("error");
