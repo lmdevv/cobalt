@@ -22,7 +22,7 @@ if the desired service isn't supported yet, feel free to create an appropriate i
 | dailymotion       | ✅            | ✅         | ✅         | ❌              | ✅         | ✅              |
 | instagram         | ✅            | ✅         | ✅         | ❌              | ➖         | ➖              |
 | facebook          | ✅            | ❌         | ✅         | ❌              | ➖         | ➖              |
-| loom              | ✅            | ❌         | ✅         | ❌              | ✅         | ➖              |
+| loom              | ✅            | ❌         | ✅         | ✅              | ✅         | ➖              |
 | newgrounds        | ✅            | ✅         | ✅         | ❌              | ✅         | ✅              |
 | ok.ru             | ✅            | ❌         | ✅         | ❌              | ✅         | ✅              |
 | pinterest         | ✅            | ✅         | ✅         | ❌              | ➖         | ➖              |
@@ -45,7 +45,7 @@ if the desired service isn't supported yet, feel free to create an appropriate i
 | ➖      | unreasonable/impossible |
 | ❌      | not supported           |
 
-standalone transcript downloads are supported for youtube with `downloadMode: "captions"`.
+standalone transcript downloads are supported for marked services with `downloadMode: "captions"`.
 
 ### additional notes or features (per service)
 | service    | notes or features                                                                                                    |

@@ -252,6 +252,9 @@ export default async function({ host, patternMatch, params, authType }) {
                 r = await loom({
                     id: patternMatch.id,
                     subtitleLang,
+                    isCaptionOnly,
+                    captionLanguage: params.captionLanguage || subtitleLang,
+                    captionFormat: params.captionFormat,
                 });
                 break;
 
