@@ -35,7 +35,7 @@ if the desired service isn't supported yet, feel free to create an appropriate i
 | tumblr            | ✅            | ✅         | ✅         | ❌              | ➖         | ➖              |
 | twitch clips      | ✅            | ✅         | ✅         | ❌              | ✅         | ✅              |
 | twitter/x         | ✅            | ✅         | ✅         | ❌              | ➖         | ➖              |
-| vimeo             | ✅            | ✅         | ✅         | ❌              | ✅         | ✅              |
+| vimeo             | ✅            | ✅         | ✅         | ✅              | ✅         | ✅              |
 | vk videos & clips | ✅            | ❌         | ✅         | ✅              | ✅         | ✅              |
 | youtube           | ✅            | ✅         | ✅         | ✅              | ✅         | ✅              |
 
