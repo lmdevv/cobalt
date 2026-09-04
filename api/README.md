@@ -27,7 +27,7 @@ if the desired service isn't supported yet, feel free to create an appropriate i
 | ok.ru             | ✅            | ❌         | ✅         | ❌              | ✅         | ✅              |
 | pinterest         | ✅            | ✅         | ✅         | ❌              | ➖         | ➖              |
 | reddit            | ✅            | ✅         | ✅         | ❌              | ❌         | ❌              |
-| rutube            | ✅            | ✅         | ✅         | ❌              | ✅         | ✅              |
+| rutube            | ✅            | ✅         | ✅         | ✅              | ✅         | ✅              |
 | snapchat          | ✅            | ✅         | ✅         | ❌              | ➖         | ➖              |
 | soundcloud        | ➖            | ✅         | ➖         | ❌              | ✅         | ✅              |
 | streamable        | ✅            | ✅         | ✅         | ❌              | ➖         | ➖              |

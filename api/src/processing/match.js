@@ -234,6 +234,9 @@ export default async function({ host, patternMatch, params, authType }) {
                     quality: params.videoQuality,
                     isAudioOnly,
                     subtitleLang,
+                    isCaptionOnly,
+                    captionLanguage: params.captionLanguage || subtitleLang,
+                    captionFormat: params.captionFormat,
                 });
                 break;
 

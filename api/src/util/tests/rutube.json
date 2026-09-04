@@ -9,6 +9,19 @@
         }
     },
     {
+        "name": "standalone transcript",
+        "url": "https://rutube.ru/video/b2f6c27649907c2fde0af411b03825eb/",
+        "canFail": true,
+        "params": {
+            "downloadMode": "captions",
+            "captionFormat": "txt"
+        },
+        "expected": {
+            "code": 200,
+            "status": "tunnel"
+        }
+    },
+    {
         "name": "vertical video (isAudioMuted)",
         "url": "https://rutube.ru/video/18a281399b96f9184c647455a86f6724/",
         "params": {
