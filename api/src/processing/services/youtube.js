@@ -7,6 +7,7 @@ import { Innertube, Platform, Session } from "youtubei.js";
 import { env } from "../../config.js";
 import { getCookie } from "../cookie/manager.js";
 import { getYouTubeSession } from "../helpers/youtube-session.js";
+import { selectCaptionTrack } from "../helpers/captions.js";
 
 // https://github.com/LuanRT/YouTube.js/pull/1052
 Platform.shim.eval = async (data) => {
@@ -135,9 +136,18 @@ const getHlsVariants = async (hlsManifest, dispatcher) => {
     return variants;
 }
 
-const getSubtitles = async (info, dispatcher, subtitleLang) => {
-    const preferredCap = info.captions.caption_tracks.find(caption =>
-        caption.kind !== 'asr' && caption.language_code.startsWith(subtitleLang)
+const normalizedLanguage = language => language?.toLowerCase().replace("_", "-");
+
+const getSubtitles = async (
+    info,
+    dispatcher,
+    subtitleLang,
+    allowAutomatic = false
+) => {
+    const preferredCap = selectCaptionTrack(
+        info.captions.caption_tracks,
+        subtitleLang,
+        allowAutomatic
     );
 
     const captionsUrl = preferredCap?.base_url;
@@ -167,8 +177,9 @@ const getSubtitles = async (info, dispatcher, subtitleLang) => {
     const hlsSubtitles = hlsVariants[0]?.subtitles;
     if (!hlsSubtitles?.length) return;
 
-    const preferredHls = hlsSubtitles.find(
-        subtitle => subtitle.language.startsWith(subtitleLang)
+    const preferredHls = hlsSubtitles.find(subtitle =>
+        normalizedLanguage(subtitle.language)
+            ?.startsWith(normalizedLanguage(preferredCap.language_code))
     );
 
     if (!preferredHls) return;
@@ -217,7 +228,7 @@ export default async function (o) {
         );
 
     // we can get subtitles reliably only from the iOS client
-    if (o.subtitleLang) {
+    if (o.subtitleLang || o.isCaptionOnly) {
         innertubeClient = "IOS";
         useSession = false;
     }
@@ -324,7 +335,7 @@ export default async function (o) {
         return { error: "content.video.live" };
     }
 
-    if (basicInfo.duration > env.durationLimit) {
+    if (!o.isCaptionOnly && basicInfo.duration > env.durationLimit) {
         return { error: "content.too_long" };
     }
 
@@ -335,6 +346,57 @@ export default async function (o) {
             error: "fetch.fail",
             critical: true
         }
+    }
+
+    if (o.isCaptionOnly) {
+        const captionTracks = info.captions?.caption_tracks || [];
+        if (!captionTracks.length) {
+            return { error: "youtube.captions_unavailable" };
+        }
+
+        const selectedTrack = selectCaptionTrack(
+            captionTracks,
+            o.captionLanguage || o.subtitleLang,
+            true
+        );
+        if (!selectedTrack) {
+            return {
+                error: "youtube.caption_language_unavailable",
+                context: {
+                    languages: [...new Set(captionTracks.map(track => track.language_code))],
+                }
+            };
+        }
+
+        const captions = await getSubtitles(
+            info,
+            o.dispatcher,
+            selectedTrack.language_code,
+            true
+        );
+        if (!captions?.url) {
+            return { error: "youtube.captions_unavailable" };
+        }
+
+        return {
+            type: "captions",
+            isCaptionOnly: true,
+            urls: captions.url,
+            captionFormat: o.captionFormat,
+            captionLanguage: captions.language,
+            filenameAttributes: {
+                service: "youtube",
+                id: o.id,
+                title: basicInfo.title.trim(),
+                author: basicInfo.author.replace("- Topic", "").trim(),
+            },
+            captionMetadata: {
+                title: basicInfo.title.trim(),
+                author: basicInfo.author.replace("- Topic", "").trim(),
+                language: captions.language,
+                source: `https://www.youtube.com/watch?v=${o.id}`,
+            },
+        };
     }
 
     const normalizeQuality = res => {

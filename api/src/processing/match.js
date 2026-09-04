@@ -49,7 +49,8 @@ export default async function({ host, patternMatch, params, authType }) {
     try {
         let r,
             isAudioOnly = params.downloadMode === "audio",
-            isAudioMuted = params.downloadMode === "mute";
+            isAudioMuted = params.downloadMode === "mute",
+            isCaptionOnly = params.downloadMode === "captions";
 
         if (!testers[host]) {
             return createResponse("error", {
@@ -62,6 +63,12 @@ export default async function({ host, patternMatch, params, authType }) {
                 context: {
                     service: friendlyServiceName(host),
                 }
+            });
+        }
+
+        if (isCaptionOnly && host !== "youtube") {
+            return createResponse("error", {
+                code: "error.api.service.captions_not_supported"
             });
         }
 
@@ -121,9 +128,12 @@ export default async function({ host, patternMatch, params, authType }) {
                     dubLang: params.youtubeDubLang,
                     youtubeHLS,
                     subtitleLang,
+                    isCaptionOnly,
+                    captionLanguage: params.captionLanguage,
+                    captionFormat: params.captionFormat,
                 }
 
-                if (url.hostname === "music.youtube.com" || isAudioOnly) {
+                if (!isCaptionOnly && (url.hostname === "music.youtube.com" || isAudioOnly)) {
                     fetchInfo.quality = "1080";
                     fetchInfo.codec = "vp9";
                     fetchInfo.isAudioOnly = true;
@@ -284,7 +294,7 @@ export default async function({ host, patternMatch, params, authType }) {
         }
 
         if (r.error) {
-            let context;
+            let context = r.context;
             switch(r.error) {
                 case "content.too_long":
                     context = {

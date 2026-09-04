@@ -45,6 +45,9 @@ export function createStream(obj) {
 
             // url to a subtitle file
             subtitles: obj.subtitles,
+
+            captionFormat: obj.captionFormat,
+            captionMetadata: obj.captionMetadata,
         };
 
     // FIXME: this is now a Promise, but it is not awaited
@@ -264,7 +267,11 @@ function wrapStream(streamInfo) {
     }
 
     if (typeof url === 'string') {
-        streamInfo.urls = createInternalStream(url, streamInfo);
+        streamInfo.urls = createInternalStream(
+            url,
+            streamInfo,
+            streamInfo.type === "captions"
+        );
     } else if (Array.isArray(url)) {
         for (const idx in streamInfo.urls) {
             streamInfo.urls[idx] = createInternalStream(
