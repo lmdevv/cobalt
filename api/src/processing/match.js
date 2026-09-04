@@ -103,6 +103,9 @@ export default async function({ host, patternMatch, params, authType }) {
                     accessKey: patternMatch.accessKey,
                     quality: params.videoQuality,
                     subtitleLang,
+                    isCaptionOnly,
+                    captionLanguage: params.captionLanguage || subtitleLang,
+                    captionFormat: params.captionFormat,
                 });
                 break;
 

@@ -36,7 +36,7 @@ if the desired service isn't supported yet, feel free to create an appropriate i
 | twitch clips      | ✅            | ✅         | ✅         | ❌              | ✅         | ✅              |
 | twitter/x         | ✅            | ✅         | ✅         | ❌              | ➖         | ➖              |
 | vimeo             | ✅            | ✅         | ✅         | ❌              | ✅         | ✅              |
-| vk videos & clips | ✅            | ❌         | ✅         | ❌              | ✅         | ✅              |
+| vk videos & clips | ✅            | ❌         | ✅         | ✅              | ✅         | ✅              |
 | youtube           | ✅            | ✅         | ✅         | ✅              | ✅         | ✅              |
 
 | emoji   | meaning                 |
