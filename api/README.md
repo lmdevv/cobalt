@@ -31,7 +31,7 @@ if the desired service isn't supported yet, feel free to create an appropriate i
 | snapchat          | ✅            | ✅         | ✅         | ❌              | ➖         | ➖              |
 | soundcloud        | ➖            | ✅         | ➖         | ❌              | ✅         | ✅              |
 | streamable        | ✅            | ✅         | ✅         | ❌              | ➖         | ➖              |
-| tiktok            | ✅            | ✅         | ✅         | ❌              | ❌         | ❌              |
+| tiktok            | ✅            | ✅         | ✅         | ✅              | ❌         | ❌              |
 | tumblr            | ✅            | ✅         | ✅         | ❌              | ➖         | ➖              |
 | twitch clips      | ✅            | ✅         | ✅         | ❌              | ✅         | ✅              |
 | twitter/x         | ✅            | ✅         | ✅         | ❌              | ➖         | ➖              |

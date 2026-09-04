@@ -1,7 +1,7 @@
 import UrlPattern from "url-pattern";
 
 export const audioIgnore = new Set(["vk", "ok", "loom"]);
-export const captionOnlyServices = new Set(["loom", "rutube", "vimeo", "vk", "youtube"]);
+export const captionOnlyServices = new Set(["loom", "rutube", "tiktok", "vimeo", "vk", "youtube"]);
 export const hlsExceptions = new Set(["dailymotion", "vimeo", "rutube", "bsky", "youtube"]);
 
 export const services = {

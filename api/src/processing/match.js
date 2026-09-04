@@ -167,6 +167,9 @@ export default async function({ host, patternMatch, params, authType }) {
                     h265: params.allowH265,
                     alwaysProxy: params.alwaysProxy,
                     subtitleLang,
+                    isCaptionOnly,
+                    captionLanguage: params.captionLanguage || subtitleLang,
+                    captionFormat: params.captionFormat,
                 });
                 break;
 

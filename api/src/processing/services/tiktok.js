@@ -5,6 +5,10 @@ import { genericUserAgent } from "../../config.js";
 import { updateCookie } from "../cookie/manager.js";
 import { createStream } from "../../stream/manage.js";
 import { convertLanguageCode } from "../../misc/language-codes.js";
+import {
+    createCaptionResponse,
+    matchesCaptionLanguage,
+} from "../helpers/captions.js";
 
 const shortDomain = "https://vt.tiktok.com/";
 
@@ -70,6 +74,33 @@ export default async function(obj) {
 
     if (!detail.author) {
         return { error: "fetch.empty" };
+    }
+
+    if (obj.isCaptionOnly) {
+        const requestedLanguage = convertLanguageCode(obj.captionLanguage)
+            || obj.captionLanguage;
+        const subtitle = detail.video?.subtitleInfos?.find(subtitle =>
+            subtitle.Format === "webvtt"
+            && matchesCaptionLanguage(subtitle.LanguageCodeName, requestedLanguage)
+        );
+        if (!subtitle) return { error: "fetch.empty" };
+
+        const language = convertLanguageCode(subtitle.LanguageCodeName)
+            || subtitle.LanguageCodeName;
+        return createCaptionResponse({
+            url: subtitle.Url,
+            format: obj.captionFormat,
+            language,
+            service: "tiktok",
+            id: postId,
+            title: detail.desc?.trim(),
+            author: detail.author.uniqueId,
+            source: `https://www.tiktok.com/@${detail.author.uniqueId}/video/${postId}`,
+            headers: {
+                cookie: cookie.toString(),
+                "user-agent": genericUserAgent,
+            },
+        });
     }
 
     let video, videoFilename, audioFilename, audio, images,
