@@ -92,7 +92,10 @@ export default async function({ host, patternMatch, params, authType }) {
                     toGif: !!params.convertGif,
                     alwaysProxy: params.alwaysProxy,
                     dispatcher,
-                    subtitleLang
+                    subtitleLang,
+                    isCaptionOnly,
+                    captionLanguage: params.captionLanguage || subtitleLang,
+                    captionFormat: params.captionFormat,
                 });
                 break;
 
