@@ -28,6 +28,7 @@ export default async function captions(streamInfo, res) {
             signal: abortController.signal,
             maxRedirections: 4,
             dispatcher: defaultAgent,
+            headers: streamInfo.headers,
         });
 
         if (response.statusCode < 200 || response.statusCode > 299) {

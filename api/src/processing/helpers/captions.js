@@ -1,5 +1,36 @@
 const normalizedLanguage = language => language?.toLowerCase().replace("_", "-");
 
+export const createCaptionResponse = ({
+    url,
+    format,
+    language,
+    service,
+    id,
+    title,
+    author,
+    source,
+    headers,
+}) => ({
+    type: "captions",
+    isCaptionOnly: true,
+    urls: url,
+    headers,
+    captionFormat: format,
+    captionLanguage: language,
+    filenameAttributes: {
+        service,
+        id,
+        title: title || `${service}_${id}`,
+        author,
+    },
+    captionMetadata: {
+        title,
+        author,
+        language,
+        source,
+    },
+});
+
 export const selectCaptionTrack = (tracks, subtitleLang, allowAutomatic = false) => {
     const allowed = tracks.filter(track => allowAutomatic || track.kind !== "asr");
     if (!allowed.length) return;

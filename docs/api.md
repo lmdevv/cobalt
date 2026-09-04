@@ -95,10 +95,11 @@ all keys except for `url` are optional. value options are separated by `/`.
 | `youtubeBetterAudio`    | `boolean` | prefer higher quality youtube audio if possible   | `false` |
 | `youtubeHLS`            | `boolean` | use HLS formats when downloading from youtube     | `false` |
 
-#### standalone youtube captions
+#### standalone captions
 
 set `downloadMode` to `captions` to download a caption or transcript file without
-downloading video or audio. this mode currently supports youtube links.
+downloading video or audio. supported services are listed in the
+[api readme](/api/README.md#supported-services).
 
 `captionLanguage` selects the caption language, falling back to `subtitleLang` when
 omitted. if both are omitted, cobalt prefers the first manually provided track and

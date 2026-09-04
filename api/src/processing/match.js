@@ -7,6 +7,7 @@ import { testers } from "./service-patterns.js";
 import matchAction from "./match-action.js";
 
 import { friendlyServiceName } from "./service-alias.js";
+import { captionOnlyServices } from "./service-config.js";
 
 import bilibili from "./services/bilibili.js";
 import reddit from "./services/reddit.js";
@@ -66,7 +67,7 @@ export default async function({ host, patternMatch, params, authType }) {
             });
         }
 
-        if (isCaptionOnly && host !== "youtube") {
+        if (isCaptionOnly && !captionOnlyServices.has(host)) {
             return createResponse("error", {
                 code: "error.api.service.captions_not_supported"
             });

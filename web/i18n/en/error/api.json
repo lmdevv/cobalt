@@ -25,7 +25,7 @@
     "service.unsupported": "this service is not supported yet. have you pasted the right link?",
     "service.disabled": "this service is generally supported by cobalt, but it's disabled on this processing instance. try a link from another service!",
     "service.audio_not_supported": "this service doesn't support audio extraction. try a link from another service!",
-    "service.captions_not_supported": "standalone transcripts are only available for youtube links right now.",
+    "service.captions_not_supported": "this service doesn't support standalone transcripts.",
 
     "link.invalid": "your link is invalid or this service is not supported yet. have you pasted the right link?",
     "link.unsupported": "{{ service }} is supported, but i couldn't recognize your link. have you pasted the right one?",
