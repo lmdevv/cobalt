@@ -55,7 +55,8 @@ export default async function captions(streamInfo, res) {
         const body = convertCaptions(
             Buffer.concat(chunks).toString("utf8"),
             streamInfo.captionFormat,
-            streamInfo.captionMetadata
+            streamInfo.captionMetadata,
+            streamInfo.captionSourceFormat
         );
 
         res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");

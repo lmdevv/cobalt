@@ -61,6 +61,30 @@ export const parseVtt = input => {
     return cues;
 };
 
+export const parseSrt = input => {
+    const normalized = input.replace(/^\uFEFF/, "").replace(/\r\n?/g, "\n");
+    const cues = [];
+
+    for (const block of normalized.split(/\n{2,}/)) {
+        const lines = block.split("\n").map(line => line.trimEnd());
+        const timingIndex = lines.findIndex(line => line.includes(" --> "));
+        if (timingIndex < 0) continue;
+
+        const timing = lines[timingIndex].match(
+            /^(\d{2}:)?\d{2}:\d{2},\d{3}\s+-->\s+(\d{2}:)?\d{2}:\d{2},\d{3}/
+        )?.[0];
+        if (!timing) continue;
+
+        const [ start, end ] = timing.split(/\s+-->\s+/).map(value =>
+            value.replace(",", ".")
+        );
+        const text = cleanCueText(lines.slice(timingIndex + 1).join("\n"));
+        if (text) cues.push({ start, end, text });
+    }
+
+    return cues;
+};
+
 const transcriptLines = cues => {
     const lines = [];
     for (const cue of cues) {
@@ -83,13 +107,20 @@ const srtTimestamp = timestamp => {
 
 const escapeMarkdown = value => value.replace(/[\\`*_{}\[\]<>#+.!|~-]/g, "\\$&");
 
-export const convertCaptions = (vtt, format, metadata = {}) => {
-    if (format === "vtt") {
-        return vtt.replace(/^\uFEFF/, "").replace(/\r\n?/g, "\n");
+export const convertCaptions = (input, format, metadata = {}, sourceFormat = "vtt") => {
+    if (sourceFormat === "vtt" && format === "vtt") {
+        return input.replace(/^\uFEFF/, "").replace(/\r\n?/g, "\n");
     }
 
-    const cues = parseVtt(vtt);
+    const cues = sourceFormat === "srt" ? parseSrt(input) : parseVtt(input);
     if (!cues.length) throw new Error("caption file has no cues");
+
+    if (format === "vtt") {
+        return "WEBVTT\n\n" + cues.map(cue => [
+            `${cue.start} --> ${cue.end}`,
+            cue.text,
+        ].join("\n")).join("\n\n") + "\n";
+    }
 
     if (format === "srt") {
         return cues.map((cue, index) => [

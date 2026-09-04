@@ -48,7 +48,7 @@ export default async function(obj) {
 
     if (obj.isCaptionOnly) {
         const caption = play.captions?.find(caption =>
-            caption.format === "webvtt"
+            ["webvtt", "srt"].includes(caption.format)
             && matchesCaptionLanguage(caption.code, obj.captionLanguage)
         );
         if (!caption) return { error: "fetch.empty" };
@@ -56,6 +56,7 @@ export default async function(obj) {
         return createCaptionResponse({
             url: caption.file,
             format: obj.captionFormat,
+            sourceFormat: caption.format === "webvtt" ? "vtt" : caption.format,
             language: caption.code,
             service: "rutube",
             id: obj.id,

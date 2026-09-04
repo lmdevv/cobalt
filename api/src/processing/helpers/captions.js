@@ -12,6 +12,7 @@ export const matchesCaptionLanguage = (language, requested) => {
 export const createCaptionResponse = ({
     url,
     format,
+    sourceFormat = "vtt",
     language,
     service,
     id,
@@ -27,6 +28,7 @@ export const createCaptionResponse = ({
         urls: url,
         headers,
         captionFormat: format,
+        captionSourceFormat: sourceFormat,
         captionLanguage: language || "unknown",
         filenameAttributes: {
             service,

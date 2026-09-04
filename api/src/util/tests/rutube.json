@@ -10,11 +10,11 @@
     },
     {
         "name": "standalone transcript",
-        "url": "https://rutube.ru/video/b2f6c27649907c2fde0af411b03825eb/",
-        "canFail": true,
+        "url": "https://rutube.ru/video/76ee456fa0fe79a8e0013b6110cb0168/",
         "params": {
             "downloadMode": "captions",
-            "captionFormat": "txt"
+            "captionFormat": "txt",
+            "captionLanguage": "ru"
         },
         "expected": {
             "code": 200,

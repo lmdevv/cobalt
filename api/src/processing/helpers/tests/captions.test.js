@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 
 import { selectCaptionTrack } from "../captions.js";
-import { convertCaptions, parseVtt } from "../caption-formats.js";
+import { convertCaptions, parseSrt, parseVtt } from "../caption-formats.js";
 import { apiSchema } from "../../schema.js";
 
 const sample = `\uFEFFWEBVTT\r
@@ -21,12 +21,33 @@ Hello &amp; welcome back\r
 <v Speaker>Final line</v>\r
 `;
 
+const sampleSrt = `1\r
+00:00:00,000 --> 00:00:02,500\r
+Hello &amp; welcome\r
+\r
+2\r
+00:00:02,500 --> 00:00:04,000\r
+Final line\r
+`;
+
 test("parseVtt extracts and cleans cues", () => {
     assert.deepEqual(parseVtt(sample), [
         { start: "00:00.000", end: "00:02.500", text: "Hello & welcome" },
         { start: "00:02.500", end: "00:04.000", text: "Hello & welcome back" },
         { start: "00:04.000", end: "00:06.250", text: "Final line" },
     ]);
+});
+
+test("SRT input converts to transcripts and VTT", () => {
+    assert.equal(parseSrt(sampleSrt).length, 2);
+    assert.equal(
+        convertCaptions(sampleSrt, "txt", {}, "srt"),
+        "Hello & welcome\n\nFinal line\n"
+    );
+    assert.match(
+        convertCaptions(sampleSrt, "vtt", {}, "srt"),
+        /^WEBVTT\n\n00:00:00\.000 --> 00:00:02\.500/
+    );
 });
 
 test("plain text collapses growing automatic-caption cues", () => {
