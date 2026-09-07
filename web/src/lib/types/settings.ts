@@ -12,6 +12,7 @@ export * from "$lib/types/settings/v4";
 export * from "$lib/types/settings/v5";
 export * from "$lib/types/settings/v6";
 export * from "$lib/types/settings/v7";
+export { downloadModeOptions } from "$lib/types/settings/v7";
 
 export type CobaltSettings = CobaltSettingsV7;
 

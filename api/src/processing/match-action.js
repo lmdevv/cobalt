@@ -35,6 +35,7 @@ export default function({
             originalRequest: r.originalRequest,
             subtitles: r.subtitles,
             captionFormat: r.captionFormat,
+            captionSourceFormat: r.captionSourceFormat,
             captionMetadata: !disableMetadata ? r.captionMetadata : {},
             cover: !disableMetadata ? r.cover : false,
             cropCover: !disableMetadata ? r.cropCover : false,

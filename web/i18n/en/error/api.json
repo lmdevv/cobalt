@@ -62,5 +62,7 @@
     "youtube.drm": "this youtube video is protected by widevine DRM, so i can't download it. try a different link!",
     "youtube.no_session_tokens": "couldn't get required session tokens for youtube. this may be caused by a restriction on youtube's side. try again in a few seconds, but if this issue sticks, please report it!",
     "youtube.captions_unavailable": "this video doesn't have any captions i can download.",
-    "youtube.caption_language_unavailable": "this video doesn't have captions in the selected language. available languages: {{ languages }}."
+    "youtube.caption_language_unavailable": "this video doesn't have captions in the selected language. available languages: {{ languages }}.",
+    "captions.unavailable": "this video doesn't have any captions i can download.",
+    "captions.language_unavailable": "this video doesn't have captions in your preferred language. you can download an available transcript instead."
 }

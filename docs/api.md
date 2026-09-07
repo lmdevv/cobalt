@@ -102,10 +102,17 @@ downloading video or audio. supported services are listed in the
 [api readme](/api/README.md#supported-services).
 
 `captionLanguage` selects the caption language, falling back to `subtitleLang` when
-omitted. if both are omitted, cobalt prefers the first manually provided track and
-falls back to an automatic caption track. when a language is provided, cobalt matches
-the full language code first and then its base language. manually provided captions
-take priority over automatic captions.
+omitted. if both are omitted, cobalt chooses an available track. when a service
+identifies automatic captions, manually provided tracks take priority.
+
+when a language is provided, an exact match takes priority over compatible regional
+variants, with manual captions preferred within each tier. explicitly requested
+writing systems are preserved, so `zh-Hant` will not fall back to `zh-Hans`.
+
+if captions exist but none match, the api returns
+`error.api.captions.language_unavailable`. omit both language fields to retry with an
+available track. if no downloadable tracks exist, the error is
+`error.api.captions.unavailable`.
 
 `txt` and `md` produce readable transcripts without timestamps. `vtt` preserves the
 original webvtt cues, while `srt` converts those cues to the subrip format.

@@ -4,7 +4,8 @@ import { merge } from '../../misc/utils.js';
 import { getCookie } from "../cookie/manager.js";
 import {
     createCaptionResponse,
-    matchesCaptionLanguage,
+    selectCaptionTrack,
+    captionSelectionError,
 } from "../helpers/captions.js";
 
 const resolutionMatch = {
@@ -200,16 +201,18 @@ const getHLS = async (configURL, obj) => {
 export default async function(obj) {
     if (obj.isCaptionOnly) {
         const config = await getPlayerConfig(obj.id, obj.password);
-        const track = config?.request?.text_tracks?.find(track =>
-            track.url
-            && matchesCaptionLanguage(track.lang, obj.captionLanguage)
-        );
-        if (!track) return { error: "fetch.empty" };
+        if (!config) return { error: "fetch.fail" };
+        const tracks = (config.request?.text_tracks || []).map(track => ({
+            url: track.url,
+            language: track.lang,
+        }));
+        const track = selectCaptionTrack(tracks, obj.captionLanguage);
+        if (!track) return captionSelectionError(tracks);
 
         return createCaptionResponse({
             url: new URL(track.url, "https://player.vimeo.com/").toString(),
             format: obj.captionFormat,
-            language: track.lang,
+            language: track.language,
             service: "vimeo",
             id: obj.id,
             title: config.video?.title,

@@ -1,7 +1,8 @@
 import { genericUserAgent } from "../../config.js";
 import {
     createCaptionResponse,
-    matchesCaptionLanguage,
+    selectCaptionTrack,
+    captionSelectionError,
 } from "../helpers/captions.js";
 
 const craftHeaders = id => ({
@@ -102,8 +103,9 @@ export default async function({
 }) {
     if (isCaptionOnly) {
         const transcript = await getTranscript(id);
-        if (!transcript || !matchesCaptionLanguage(transcript.language, captionLanguage)) {
-            return { error: "fetch.empty" };
+        const tracks = transcript ? [transcript] : [];
+        if (!selectCaptionTrack(tracks, captionLanguage)) {
+            return captionSelectionError(tracks);
         }
 
         return createCaptionResponse({

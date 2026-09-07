@@ -81,9 +81,10 @@ export const copyURL = async (url: string) => {
 }
 
 export const copyTextFromURL = async (url: string) => {
+    if (!navigator?.clipboard?.writeText) throw new Error("clipboard unavailable");
     const response = await fetch(url);
     if (!response.ok) throw new Error("couldn't fetch transcript");
-    return await navigator?.clipboard?.writeText(await response.text());
+    return await navigator.clipboard.writeText(await response.text());
 }
 
 export const downloadFile = async ({ url, file, urlType, copyTextURL, method }: DownloadFileParams) => {

@@ -77,7 +77,7 @@
     "captions.method": "transcript saving method",
     "captions.method.description": "how to save transcripts from the save button. \"ask\" shows both options every time.",
     "captions.language": "preferred transcript language",
-    "captions.language.description": "cobalt will pick the transcript in this language when the video has multiple caption tracks. otherwise it falls back to the video's default track.",
+    "captions.language.description": "pick a preferred transcript language, or let cobalt choose an available track automatically. if your preferred language isn't available, cobalt will ask before downloading another language.",
 
     "audio.youtube.better_audio": "youtube audio quality",
     "audio.youtube.better_audio.title": "prefer better quality",
@@ -168,5 +168,6 @@
 
     "tabs": "navigation",
     "tabs.hide_remux": "hide the remux tab",
-    "tabs.hide_remux.description": "if you don't use the remux tool, you can hide it from the navigation bar."
+    "tabs.hide_remux.description": "if you don't use the remux tool, you can hide it from the navigation bar.",
+    "captions.language.automatic": "automatic"
 }

@@ -18,6 +18,10 @@
     import SettingsDropdown from "$components/settings/SettingsDropdown.svelte";
 
     const displayLangs = namedSubtitleLanguages($t);
+    const displayCaptionLangs: Record<string, string> = {
+        ...displayLangs,
+        none: $t("settings.captions.language.automatic"),
+    };
     const displayCaptionFormats = Object.fromEntries(
         captionFormatOptions.map(format => [format, $t(`settings.captions.format.${format}`)])
     );
@@ -71,11 +75,11 @@
     <SettingsDropdown
         title={$t("settings.captions.language")}
         description={$t("settings.captions.language.description")}
-        items={displayLangs}
+        items={displayCaptionLangs}
         settingContext="save"
         settingId="captionLang"
         selectedOption={$settings.save.captionLang}
-        selectedTitle={displayLangs[$settings.save.captionLang]}
+        selectedTitle={displayCaptionLangs[$settings.save.captionLang]}
     />
 </SettingsCategory>
 

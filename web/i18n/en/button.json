@@ -26,5 +26,6 @@
     "clear_cache": "clear cache",
     "remove": "remove",
     "retry": "retry",
-    "delete": "delete"
+    "delete": "delete",
+    "download.transcript_any_language": "download anyway"
 }

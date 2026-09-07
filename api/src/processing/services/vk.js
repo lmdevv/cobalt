@@ -1,7 +1,8 @@
 import { env } from "../../config.js";
 import {
     createCaptionResponse,
-    matchesCaptionLanguage,
+    selectCaptionTrack,
+    captionSelectionError,
 } from "../helpers/captions.js";
 
 const resolutions = ["2160", "1440", "1080", "720", "480", "360", "240", "144"];
@@ -117,17 +118,17 @@ export default async function ({
     }
 
     if (isCaptionOnly) {
-        const subtitle = video.subtitles?.find(subtitle =>
-            subtitle.title?.endsWith(".vtt")
-            && matchesCaptionLanguage(subtitle.lang, captionLanguage)
-        );
-        if (!subtitle) return { error: "fetch.empty" };
+        const tracks = (video.subtitles || [])
+            .filter(subtitle => subtitle.title?.endsWith(".vtt"))
+            .map(subtitle => ({ url: subtitle.url, language: subtitle.lang }));
+        const subtitle = selectCaptionTrack(tracks, captionLanguage);
+        if (!subtitle) return captionSelectionError(tracks);
 
         const id = `${ownerId}_${videoId}${accessKey ? `_${accessKey}` : ''}`;
         return createCaptionResponse({
             url: subtitle.url,
             format: captionFormat,
-            language: subtitle.lang,
+            language: subtitle.language,
             service: "vk",
             id,
             title: video.title?.trim(),

@@ -7,7 +7,9 @@ import { createStream } from "../../stream/manage.js";
 import { convertLanguageCode } from "../../misc/language-codes.js";
 import {
     createCaptionResponse,
-    matchesCaptionLanguage,
+    selectCaptionTrack,
+    captionSelectionError,
+    normalizeCaptionLanguage,
 } from "../helpers/captions.js";
 
 const shortDomain = "https://vt.tiktok.com/";
@@ -77,20 +79,19 @@ export default async function(obj) {
     }
 
     if (obj.isCaptionOnly) {
-        const requestedLanguage = convertLanguageCode(obj.captionLanguage)
-            || obj.captionLanguage;
-        const subtitle = detail.video?.subtitleInfos?.find(subtitle =>
-            subtitle.Format === "webvtt"
-            && matchesCaptionLanguage(subtitle.LanguageCodeName, requestedLanguage)
-        );
-        if (!subtitle) return { error: "fetch.empty" };
+        const tracks = (detail.video?.subtitleInfos || [])
+            .filter(subtitle => subtitle.Format === "webvtt")
+            .map(subtitle => ({
+                url: subtitle.Url,
+                language: normalizeCaptionLanguage(subtitle.LanguageCodeName),
+            }));
+        const subtitle = selectCaptionTrack(tracks, obj.captionLanguage);
+        if (!subtitle) return captionSelectionError(tracks);
 
-        const language = convertLanguageCode(subtitle.LanguageCodeName)
-            || subtitle.LanguageCodeName;
         return createCaptionResponse({
-            url: subtitle.Url,
+            url: subtitle.url,
             format: obj.captionFormat,
-            language,
+            language: subtitle.language,
             service: "tiktok",
             id: postId,
             title: detail.desc?.trim(),
